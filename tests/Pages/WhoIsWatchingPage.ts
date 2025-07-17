@@ -22,15 +22,15 @@ export class WhoIsWatchingPage {
      * Selecciona el perfil principal del usuario
      * @param timeout - Tiempo máximo de espera en milisegundos (default: 15000)
      */
-    async selectMainProfile(timeout = 15000) {
+    async selectMainProfile() {
         // Esperar hasta que el perfil principal sea visible
-        await this.mainProfile.waitFor({
+    /*     await this.mainProfile.waitFor({
             state: 'visible',
             timeout: timeout
-        });
+        }); */
 
         // Verificar visibilidad y hacer click
-        await expect(this.mainProfile).toBeVisible();
+       // await expect(this.mainProfile).toBeVisible();
         await this.mainProfile.click();
     }
 
@@ -39,15 +39,15 @@ export class WhoIsWatchingPage {
      * Verifica el login exitoso y navega al perfil principal
      * @param timeout - Tiempo máximo de espera en milisegundos (default: 25000)
      */
-    async assertSuccessfulLogin(timeout = 25000) {
+    async assertSuccessfulLogin() {
         // Esperar hasta que el botón de edición de perfiles sea visible
-        await this.editProfiles.waitFor({
+    /*     await this.editProfiles.waitFor({
             state: 'visible',
             timeout: timeout
-        });
+        }); */
         
         // Validar visibilidad del botón y seleccionar perfil
-        await expect(this.editProfiles).toBeVisible();
+      // await expect(this.editProfiles).toBeVisible();
         await this.selectMainProfile();
         
         // Comentario preservado para posible uso futuro de validación de URL

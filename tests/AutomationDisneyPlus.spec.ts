@@ -14,7 +14,7 @@ import { SearchPage } from './Pages/SearchPage';
 
     // Configuración de credenciales de prueba
     // NOTA: Reemplazar con datos de prueba válidos
-    const email = 'gbl.co@disneyplustesting.com';
+    const email = 'disney.bot@disneyplustesting.com';
     const pass = 'Test123!';
     const wrongPass = 'Test';
 
@@ -24,7 +24,7 @@ import { SearchPage } from './Pages/SearchPage';
      * Suite de pruebas para el flujo de autenticación
      * @includes Pruebas de login exitoso y casos de error
      */
-    test.describe('Validaciones de inicio de sesión en Disney+', () => {
+    test.describe.only('Validaciones de inicio de sesión en Disney+', () => {
 
         /**
          * Configuración inicial para cada prueba de login
@@ -97,7 +97,7 @@ import { SearchPage } from './Pages/SearchPage';
                 await loginPage.performEmail(email);
                 await loginPage.ContinueButton.click();
                 await loginPage.performPassword(wrongPass);
-                await loginPage.btnLogin();
+                await loginPage.clickLoginButton();
                 await loginPage.assertSuccessfulErrorMessagePassword();
 
 

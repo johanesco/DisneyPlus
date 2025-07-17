@@ -6,7 +6,7 @@ import { expect, type Locator, type Page } from '@playwright/test';
 export class LoginPage {
     readonly page: Page;
     readonly emailInput: Locator;
-    readonly passwordlInput: Locator;
+    readonly passwordInput: Locator;
     readonly ContinueButton: Locator;
     readonly LoginButton: Locator;
     readonly errorMessage: Locator;
@@ -20,7 +20,8 @@ export class LoginPage {
     constructor(page: Page) {
         this.page = page;
         this.emailInput = page.getByRole('textbox', { name: 'Email' });
-        this.passwordlInput = page.getByRole('textbox', { name: 'Password' });
+        this.passwordInput = page.getByRole('textbox', { name: 'Password' });
+        this.errorMessage = page.getByTestId('error-message');
         this.ContinueButton = page.getByTestId('continue-btn');
         this.LoginButton = page.getByRole('button', { name: 'Log In' });
         this.emailInputEmpty = page.getByText('This email isn\'t properly');
@@ -53,21 +54,23 @@ export class LoginPage {
      * @param password - Contraseña del usuario a ingresar
      */
     async performPassword(password: string) {
-        await this.passwordlInput.fill(password);
+        await this.passwordInput.fill(password);
     }
 
     /**
      * Haz click en el botón "Continue" después de ingresar email
      */
-    async btnContinue() {
+    async clickContinueButton() {
         await this.ContinueButton.click();
+        await this.page.waitForURL(/enter-password/);
     }
 
     /**
      * Haz click en el botón "Log In" después de ingresar contraseña
      */
-    async btnLogin() {
+    async clickLoginButton() {
         await this.LoginButton.click();
+        //await this.page.waitForLoadState('networkidle');
     }
 
 
@@ -92,13 +95,10 @@ export class LoginPage {
      * @param password - Contraseña del usuario
      */
     async login(email: string, password: string) {
-        const loginPage = new LoginPage(this.page);
-
-        // Ejecutar pasos secuenciales del login
-        await loginPage.performEmail(email);
-        await loginPage.btnContinue();
-        await loginPage.performPassword(password);
-        await loginPage.btnLogin();
+        await this.performEmail(email);
+        await this.clickContinueButton();
+        await this.performPassword(password);
+        await this.clickLoginButton();
     }
 
 
