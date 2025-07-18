@@ -30,12 +30,12 @@ export class HomePage {
         this.top10 = page.getByRole('heading', { name: 'Top 10' });
         this.searchBtn = page.getByTestId('navigation-item-1-SEARCH');
         this.watchListBtn = page.getByTestId('navigation-item-2-WATCHLIST');
-        this.espnBtn =page.getByTestId('navigation-item-3-ESPN');
+        this.espnBtn = page.getByTestId('navigation-item-3-ESPN');
         this.moviesBtn = page.getByTestId('navigation-item-4-MOVIES');
         this.seriesBtn = page.getByTestId('navigation-item-5-SERIES');
         this.originalsBtn = page.getByTestId('navigation-item-6-ORIGINALS');
         this.closeOnboardingBanner = page.getByTestId('welch-onboarding-banner-closeIcon').locator('path');
-        
+
 
     }
 
@@ -65,7 +65,7 @@ export class HomePage {
     /**
      * Verifica que el botón de ESPN esté visible
      */
-    async espnButton(){
+    async espnButton() {
         await expect(this.espnBtn).toBeVisible();
     }
 
@@ -86,14 +86,14 @@ export class HomePage {
     /**
      * Verifica que el botón de Originales esté visible
      */
-    async originalsButton(){
+    async originalsButton() {
         await expect(this.originalsBtn).toBeVisible();
     }
 
- /**
-     * Cierra el botón del banner de onboarding inicial
-     */
-    async closeBanner(){
+    /**
+        * Cierra el botón del banner de onboarding inicial
+        */
+    async closeBanner() {
         await expect(this.closeOnboardingBanner).toBeVisible();
     }
 
@@ -102,24 +102,24 @@ export class HomePage {
      * Valida la sección "Recomendado para ti"
      */
     async AssertRecommendedForYou() {
+        await this.page.reload();
+        let recommendedForYouVisible = false;
 
-         let recommendedForYouVisible = false;
-        
         // Intentar hasta 5 veces encontrar la sección con scroll
         for (let attempt = 0; attempt < 5 && !recommendedForYouVisible; attempt++) {
             recommendedForYouVisible = await this.continueWatching.isVisible();
-            
+
             if (!recommendedForYouVisible) {
                 // Scroll de una página hacia abajo
                 await this.page.evaluate(() => {
                     window.scrollBy(0, window.innerHeight);
                 });
-                
+
                 // Esperar carga de contenido
                 await this.page.waitForTimeout(1000);
             }
         }
-        
+
         await expect(this.recommendedForYou).toBeVisible();
     }
 
@@ -129,18 +129,19 @@ export class HomePage {
      * @remarks Implementa scroll hasta encontrar la sección
      */
     async AssertContinueWatching() {
+        await this.page.reload();
         let continueWatchingVisible = false;
-        
+
         // Intentar hasta 5 veces encontrar la sección con scroll
         for (let attempt = 0; attempt < 5 && !continueWatchingVisible; attempt++) {
             continueWatchingVisible = await this.continueWatching.isVisible();
-            
+
             if (!continueWatchingVisible) {
                 // Scroll de una página hacia abajo
                 await this.page.evaluate(() => {
                     window.scrollBy(0, window.innerHeight);
                 });
-                
+
                 // Esperar carga de contenido
                 await this.page.waitForTimeout(1000);
             }
@@ -155,18 +156,19 @@ export class HomePage {
      * @remarks Implementa scroll hasta encontrar la sección
      */
     async AssertTop10() {
+        await this.page.reload();
         let top10Visible = false;
 
         // Intentar hasta 5 veces encontrar la sección con scroll
         for (let attempt = 0; attempt < 5 && !top10Visible; attempt++) {
             top10Visible = await this.top10.isVisible();
-            
+
             if (!top10Visible) {
                 // Scroll de una página hacia abajo
                 await this.page.evaluate(() => {
                     window.scrollBy(0, window.innerHeight);
                 });
-                
+
                 // Esperar carga de contenido
                 await this.page.waitForTimeout(1000);
             }
@@ -176,6 +178,6 @@ export class HomePage {
         await expect(this.top10).toBeVisible();
     }
 
-  
+
 
 }

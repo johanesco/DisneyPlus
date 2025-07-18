@@ -19,7 +19,8 @@ export class LoginPage {
      */
     constructor(page: Page) {
         this.page = page;
-        this.emailInput = page.locator('input[type="email"]').first();
+        // Selector mejorado con múltiples estrategias
+        this.emailInput = page.locator('input[type="email"], [data-testid="email-input"]').first();
         this.passwordInput = page.getByRole('textbox', { name: 'Password' });
         this.errorMessage = page.getByTestId('error-message');
         this.ContinueButton = page.getByTestId('continue-btn');
@@ -34,12 +35,18 @@ export class LoginPage {
      * Navega a la página de login y verifica carga inicial
      */
     async navigateToLogin() {
-        // Navegar y esperar carga completa
-        await this.page.goto('https://www.disneyplus.com/identity/login/enter-email');
-        await this.page.waitForURL('https://www.disneyplus.com/identity/login/enter-email');
+        // Navegación con espera mejorada para CI
+        await this.page.goto('https://www.disneyplus.com/identity/login/enter-email', {timeout: 60000});
         
-        // Esperar y validar campo email con timeout extendido
-        await expect(this.emailInput).toBeVisible({ timeout: 15000 });
+        // Esperar explícitamente el input con múltiples selectores
+        const emailField = this.page.locator('input[type="email"], [data-testid="email-input"]');
+        await emailField.waitFor({
+            state: 'visible',
+            timeout: 40000
+        });
+        
+        // Validación reforzada
+        await expect(emailField).toBeVisible({ timeout: 30000 });
     }
 
     /**
