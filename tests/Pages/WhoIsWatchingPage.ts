@@ -26,11 +26,14 @@ export class WhoIsWatchingPage {
         await this.mainProfile.click();
     }
 
+    
+
 
     /**
      * Verifica el login exitoso y navega al perfil principal
     */
     async assertSuccessfulLogin() {
+     
 
         await this.selectMainProfile();
 

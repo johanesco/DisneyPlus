@@ -234,7 +234,7 @@ import { SearchPage } from './Pages/SearchPage';
             await loginPage.navigateToLogin();
             await loginPage.login(email, pass);
             await whoIsWatchingPage.assertSuccessfulLogin();
-             await homePage.closeOnboardingBanner.click();
+            await homePage.closeOnboardingBanner.click();
 
 
         })

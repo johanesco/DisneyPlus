@@ -36,15 +36,15 @@ export class LoginPage {
      */
     async navigateToLogin() {
         // Navegación con espera mejorada para CI
-        await this.page.goto('https://www.disneyplus.com/identity/login/enter-email', {timeout: 60000});
-        
+        await this.page.goto('https://www.disneyplus.com/identity/login/enter-email', { timeout: 60000 });
+
         // Esperar explícitamente el input con múltiples selectores
         const emailField = this.page.locator('input[type="email"], [data-testid="email-input"]');
         await emailField.waitFor({
             state: 'visible',
             timeout: 40000
         });
-        
+
         // Validación reforzada
         await expect(emailField).toBeVisible({ timeout: 30000 });
     }
@@ -103,10 +103,20 @@ export class LoginPage {
      * @param password - Contraseña del usuario
      */
     async login(email: string, password: string) {
+
+        const expectedUrl = 'https://www.disneyplus.com/select-profile';
+
         await this.performEmail(email);
         await this.clickContinueButton();
         await this.performPassword(password);
         await this.clickLoginButton();
+
+    
+        await expect(this.page, 'NO se inició sesión, contraseña incorrecta').toHaveURL(expectedUrl);
+
+
+
+
     }
 
 
