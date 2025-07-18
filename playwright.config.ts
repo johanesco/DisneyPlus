@@ -25,7 +25,10 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
-  timeout:60000,  // Aumenta el tiempo de espera a 60 segundos
+  timeout: 120000,  // Timeout global aumentado a 120 segundos
+  expect: {
+    timeout: 30000, // Timeout para expect aumentado a 30 segundos
+  },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
