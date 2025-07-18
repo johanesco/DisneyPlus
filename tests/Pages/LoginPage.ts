@@ -19,7 +19,7 @@ export class LoginPage {
      */
     constructor(page: Page) {
         this.page = page;
-        this.emailInput = page.getByRole('textbox', { name: 'Email' });
+        this.emailInput = page.locator('input[type="email"]').first();
         this.passwordInput = page.getByRole('textbox', { name: 'Password' });
         this.errorMessage = page.getByTestId('error-message');
         this.ContinueButton = page.getByTestId('continue-btn');
@@ -34,11 +34,12 @@ export class LoginPage {
      * Navega a la página de login y verifica carga inicial
      */
     async navigateToLogin() {
-        // Navegar a URL de login
+        // Navegar y esperar carga completa
         await this.page.goto('https://www.disneyplus.com/identity/login/enter-email');
+        await this.page.waitForURL('https://www.disneyplus.com/identity/login/enter-email');
         
-        // Validar que el campo de email está visible
-        await expect(this.emailInput).toBeVisible();
+        // Esperar y validar campo email con timeout extendido
+        await expect(this.emailInput).toBeVisible({ timeout: 15000 });
     }
 
     /**

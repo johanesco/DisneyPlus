@@ -24,7 +24,7 @@ import { SearchPage } from './Pages/SearchPage';
      * Suite de pruebas para el flujo de autenticación
      * @includes Pruebas de login exitoso y casos de error
      */
-    test.describe.only('Validaciones de inicio de sesión en Disney+', () => {
+    test.describe('Validaciones de inicio de sesión en Disney+', () => {
 
         /**
          * Configuración inicial para cada prueba de login
@@ -51,9 +51,11 @@ import { SearchPage } from './Pages/SearchPage';
              */
             await test.step('Completar flujo de autenticación válida', async () => {
                 const loginPage = new LoginPage(page);
+                const homePage = new HomePage(page);
 
                 await loginPage.login(email, pass);
                 await whoIsWatchingPage.assertSuccessfulLogin();
+                await homePage.closeOnboardingBanner.click();
 
             })
 
@@ -120,10 +122,12 @@ import { SearchPage } from './Pages/SearchPage';
         test.beforeEach('Configurar sesión autenticada', async ({ page }) => {
             const loginPage = new LoginPage(page);
             const whoIsWatchingPage = new WhoIsWatchingPage(page);
+            const homePage = new HomePage(page);
 
             await loginPage.navigateToLogin();
             await loginPage.login(email, pass);
             await whoIsWatchingPage.assertSuccessfulLogin();
+            await homePage.closeOnboardingBanner.click();
 
 
         })
@@ -225,10 +229,12 @@ import { SearchPage } from './Pages/SearchPage';
         test.beforeEach('Configurar sesión autenticada', async ({ page }) => {
             const loginPage = new LoginPage(page);
             const whoIsWatchingPage = new WhoIsWatchingPage(page);
+            const homePage = new HomePage(page);
 
             await loginPage.navigateToLogin();
             await loginPage.login(email, pass);
             await whoIsWatchingPage.assertSuccessfulLogin();
+             await homePage.closeOnboardingBanner.click();
 
 
         })

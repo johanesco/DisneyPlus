@@ -16,6 +16,7 @@ export class HomePage {
     readonly moviesBtn: Locator;
     readonly seriesBtn: Locator;
     readonly originalsBtn: Locator;
+    readonly closeOnboardingBanner: Locator;
 
     /**
      * Configura los locators para los elementos principales de la página
@@ -33,6 +34,7 @@ export class HomePage {
         this.moviesBtn = page.getByTestId('navigation-item-4-MOVIES');
         this.seriesBtn = page.getByTestId('navigation-item-5-SERIES');
         this.originalsBtn = page.getByTestId('navigation-item-6-ORIGINALS');
+        this.closeOnboardingBanner = page.getByTestId('welch-onboarding-banner-closeIcon').locator('path');
         
 
     }
@@ -42,6 +44,7 @@ export class HomePage {
      * Verifica que el botón de Home esté visible
      */
     async homeButton() {
+        await this.homeBtn.waitFor({ state: "visible", timeout: 15000 });
         await expect(this.homeBtn).toBeVisible();
     }
 
@@ -87,11 +90,36 @@ export class HomePage {
         await expect(this.originalsBtn).toBeVisible();
     }
 
+ /**
+     * Cierra el botón del banner de onboarding inicial
+     */
+    async closeBanner(){
+        await expect(this.closeOnboardingBanner).toBeVisible();
+    }
+
 
     /**
      * Valida la sección "Recomendado para ti"
      */
     async AssertRecommendedForYou() {
+
+         let recommendedForYouVisible = false;
+        
+        // Intentar hasta 5 veces encontrar la sección con scroll
+        for (let attempt = 0; attempt < 5 && !recommendedForYouVisible; attempt++) {
+            recommendedForYouVisible = await this.continueWatching.isVisible();
+            
+            if (!recommendedForYouVisible) {
+                // Scroll de una página hacia abajo
+                await this.page.evaluate(() => {
+                    window.scrollBy(0, window.innerHeight);
+                });
+                
+                // Esperar carga de contenido
+                await this.page.waitForTimeout(1000);
+            }
+        }
+        
         await expect(this.recommendedForYou).toBeVisible();
     }
 
@@ -147,5 +175,7 @@ export class HomePage {
         // Validar visibilidad final
         await expect(this.top10).toBeVisible();
     }
+
+  
 
 }
