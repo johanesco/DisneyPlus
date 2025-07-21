@@ -13,6 +13,8 @@ export class LoginPage {
     readonly editProfiles: Locator;
     readonly emailInputEmpty: Locator;
     readonly errorPassword: Locator;
+    readonly mainLogIn: Locator;
+    readonly errorRemoteConfig: Locator;
 
     /**
      * @param page - Instancia de Playwright Page para control del navegador
@@ -27,16 +29,32 @@ export class LoginPage {
         this.LoginButton = page.getByRole('button', { name: 'Log In' });
         this.emailInputEmpty = page.getByText('This email isn\'t properly');
         this.errorPassword = page.getByText('We couldn\'t log you in.');
+        this.mainLogIn = page.getByTestId('log_in');
+        //this.errorRemoteConfig = pag
+       
 
     }
 
+
+    async mainLoginHome(){
+        await this.page.goto('https://www.disneyplus.com/', { timeout: 60000 });
+          await this.mainLogIn.click();
+    }
 
     /**
      * Navega a la página de login y verifica carga inicial
      */
     async navigateToLogin() {
+          await this.mainLoginHome();
+
+        const expectedUrlEnterEmail ='https://www.disneyplus.com/identity/login/enter-email';
+
+        
+        
         // Navegación con espera mejorada para CI
-        await this.page.goto('https://www.disneyplus.com/identity/login/enter-email', { timeout: 60000 });
+        await expect(this.page, 'NO se redirigó al ingreso de email').toHaveURL(expectedUrlEnterEmail);
+
+    
 
         // Esperar explícitamente el input con múltiples selectores
         const emailField = this.page.locator('input[type="email"], [data-testid="email-input"]');
